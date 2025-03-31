@@ -3,7 +3,7 @@
 
 ### Student Information
 **Name:** Anay Sinhal  
-**UFID:** 68789243
+**UFID:** 68789243  
 **UF Email:** sinhal.anay@ufl.edu
 
 ## Project Overview
