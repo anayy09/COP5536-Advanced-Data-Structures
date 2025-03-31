@@ -256,7 +256,7 @@ public class plateMgmt {
         }
         
         String inputFile = args[0];
-        String outputFile = inputFile + " " + "output.txt"; // Fixed output filename format
+        String outputFile = inputFile + "_" + "output.txt";
         
         plateMgmt system = new plateMgmt();
         system.initOutput(outputFile);
