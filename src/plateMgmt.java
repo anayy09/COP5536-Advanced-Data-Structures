@@ -9,6 +9,7 @@ public class plateMgmt {
     private RBTree licenseTree; // Red-Black Tree for storing license plates
     private int standardPlateCount = 0; // Count of standard license plates
     private int customPlateCount = 0; // Count of customized license plates
+    private HashSet<String> customPlates = new HashSet<>(); // Track custom plates for accurate revenue
     private static final String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Valid characters
     private static final int PLATE_LENGTH = 4; // Length of license plate
     private static final int STANDARD_FEE = 4; // Standard fee in Galleons
@@ -51,6 +52,7 @@ public class plateMgmt {
     public void addLicence(String plateNum) {
         if (licenseTree.insert(plateNum)) {
             customPlateCount++;
+            customPlates.add(plateNum); // Track this as a custom plate
             outputWriter.println(plateNum + " registered successfully.");
         } else {
             outputWriter.println("Failed to register " + plateNum + ": already exists.");
@@ -84,10 +86,10 @@ public class plateMgmt {
      */
     public void dropLicence(String plateNum) {
         if (licenseTree.delete(plateNum)) {
-            // Check if it was a customized plate (no reliable way to know after deletion)
-            // For a real system, we'd track this separately
-            if (isCustomPlate(plateNum)) {
+            // Check if it was a customized plate using our tracking set
+            if (customPlates.contains(plateNum)) {
                 customPlateCount--;
+                customPlates.remove(plateNum);
             } else {
                 standardPlateCount--;
             }
@@ -99,14 +101,11 @@ public class plateMgmt {
     }
     
     /**
-     * Check if a plate is custom or standard (heuristic approach)
-     * Note: In a real system, we would track this information separately
+     * Check if a plate is custom or standard
+     * Now uses the tracking set for accurate determination
      */
     private boolean isCustomPlate(String plateNum) {
-        // We don't have a reliable way to know if a plate was custom or not
-        // In a real system, we'd track this information
-        // For now, assume random distribution - this is a simplification
-        return true; // Defaulting to custom to be safe
+        return customPlates.contains(plateNum);
     }
     
     /**
@@ -126,11 +125,19 @@ public class plateMgmt {
      * @param plateNum License plate number
      */
     public void lookupPrev(String plateNum) {
+        // First check if the plate itself exists and report differently if it doesn't
+        boolean plateExists = licenseTree.search(plateNum);
+        
         String prev = licenseTree.predecessor(plateNum);
         if (prev != null) {
             outputWriter.println(plateNum + "'s prev is " + prev + ".");
         } else {
-            outputWriter.println(plateNum + " has no prev.");
+            if (plateExists) {
+                outputWriter.println(plateNum + " has no prev.");
+            } else {
+                // If plate doesn't exist and has no predecessor
+                outputWriter.println(plateNum + " does not exist and has no prev.");
+            }
         }
     }
     
@@ -139,11 +146,19 @@ public class plateMgmt {
      * @param plateNum License plate number
      */
     public void lookupNext(String plateNum) {
+        // First check if the plate itself exists and report differently if it doesn't
+        boolean plateExists = licenseTree.search(plateNum);
+        
         String next = licenseTree.successor(plateNum);
         if (next != null) {
             outputWriter.println(plateNum + "'s next is " + next + ".");
         } else {
-            outputWriter.println(plateNum + " has no next.");
+            if (plateExists) {
+                outputWriter.println(plateNum + " has no next.");
+            } else {
+                // If plate doesn't exist and has no successor
+                outputWriter.println(plateNum + " does not exist and has no next.");
+            }
         }
     }
     
