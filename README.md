@@ -17,6 +17,48 @@ This project implements a Flying Broomstick Management System for the Office of 
 - Range searches for plates between specified bounds
 - Revenue calculations for standard and customized plates
 
+## How to Use This Project
+
+### Compilation Instructions
+1. Make sure you have Java JDK installed on your system
+2. Open a terminal or command prompt
+3. Navigate to the project directory
+4. Compile using the included Makefile:
+   ```
+   make
+   ```
+   For Windows:
+   ```
+   make windows
+   ```
+
+### Running the Program
+The program accepts an input file containing commands to execute:
+```
+# On Linux/Mac
+./plateMgmt input.txt
+
+# On Windows
+plateMgmt.bat input.txt
+```
+
+### Input File Format
+The input file should contain one command per line, using the following format:
+```
+addLicence(ABCD)     // Add custom license plate
+addLicence()         // Add random license plate
+dropLicence(ABCD)    // Remove license plate
+lookupLicence(ABCD)  // Check if plate exists
+lookupPrev(ABCD)     // Find previous plate
+lookupNext(ABCD)     // Find next plate
+lookupRange(AAA1,ZZZ9) // Find plates in range
+revenue()            // Calculate revenue
+quit()               // Exit program
+```
+
+### Output
+The program will generate an output file named `input.txt_output.txt` containing the results of each command.
+
 ## Technical Implementation
 
 ### Data Structure
