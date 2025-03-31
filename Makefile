@@ -3,16 +3,13 @@
 # Java compiler
 JC = javac
 
-# Source directory
-SRC_DIR = src
-
 # Main class
 MAIN_CLASS = plateMgmt
 
 # Default target - creates executable named plateMgmt
 all: check-java clean
-	# Compile to the current directory instead of src
-	$(JC) -d . $(SRC_DIR)/*.java
+	# Compile to the current directory
+	$(JC) *.java
 	echo "#!/bin/sh" > plateMgmt
 	echo "java $(MAIN_CLASS) \$$@" >> plateMgmt
 	chmod +x plateMgmt
@@ -31,13 +28,11 @@ check-java:
 clean:
 	rm -f *.class
 	rm -f plateMgmt
-	# Don't try to remove files from src directory
-	# rm -f $(SRC_DIR)/*.class
 
 # Windows-specific makefile target
 windows:
 	@echo "Compiling for Windows environment..."
-	javac -d . $(SRC_DIR)/*.java
+	javac *.java
 	echo @echo off > plateMgmt.bat
 	echo java $(MAIN_CLASS) %%* >> plateMgmt.bat
 
