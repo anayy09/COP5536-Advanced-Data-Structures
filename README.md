@@ -1,6 +1,5 @@
 # License Plate Management System
 
-## Project Overview
 This project implements a comprehensive License Plate Management System for vehicle registration and tracking. The system efficiently manages license plates using a custom-built Red-Black Tree data structure, providing fast operations for registration, lookup, and revenue management. This project is part of COP5536 **Advanced Data Structures** (Spring 2025)
 
 ## Tech Stack
