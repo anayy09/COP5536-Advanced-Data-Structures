@@ -1,233 +1,292 @@
-# Flying Broomstick Management System
-## COP5536 Advanced Data Structures - Spring 2025
-
-### Student Information
-**Name:** Anay Sinhal  
-**UFID:** 68789243  
-**UF Email:** sinhal.anay@ufl.edu
+# License Plate Management System
 
 ## Project Overview
-This project implements a Flying Broomstick Management System for the Office of Transportation, Ministry of Magic. The system manages license plates for flying broomsticks using a Red-Black Tree as the underlying data structure.
+This project implements a comprehensive License Plate Management System for vehicle registration and tracking. The system efficiently manages license plates using a custom-built Red-Black Tree data structure, providing fast operations for registration, lookup, and revenue management. This project is part of COP5536 **Advanced Data Structures** (Spring 2025)
 
-### Key Features
-- Registration of customized and random license plates
-- Removal of license plates from the system
-- Lookup operations for existing plates
-- Finding lexicographically previous and next plates
-- Range searches for plates between specified bounds
-- Revenue calculations for standard and customized plates
+## Tech Stack
+- **Language**: Java (JDK 8+)
+- **Data Structure**: Red-Black Tree (custom implementation)
+- **Build System**: GNU Make
+- **I/O**: File-based input/output processing
+- **Collections**: HashSet for tracking custom plates
+- **Testing**: Command-line based testing with sample files
 
-## How to Use This Project
+## Core Features
 
-### Compilation Instructions
-1. Make sure you have Java JDK installed on your system
-2. Open a terminal or command prompt
-3. Navigate to the project directory
-4. Compile using the included Makefile:
-   ```
-   make
-   ```
-   For Windows:
-   ```
-   make windows
-   ```
+### 🔧 License Plate Management
+- **Custom Plate Registration**: Register user-specified 4-character license plates
+- **Random Plate Generation**: Automatically generate unique random license plates
+- **Plate Removal**: Remove existing license plates from the system
+- **Duplicate Prevention**: Ensures no duplicate plates are registered
 
-### Running the Program
-The program accepts an input file containing commands to execute:
-```
-# On Linux/Mac
-./plateMgmt input.txt
+### 🔍 Advanced Search Operations
+- **Existence Lookup**: Check if a specific license plate exists
+- **Predecessor Search**: Find the lexicographically previous plate
+- **Successor Search**: Find the lexicographically next plate  
+- **Range Queries**: Retrieve all plates within a specified range (inclusive)
 
-# On Windows
-plateMgmt.bat input.txt
-```
+### 💰 Revenue Management
+- **Dual Fee Structure**: Standard plates (4 Galleons) and custom plates (7 Galleons)
+- **Real-time Revenue Calculation**: Track and calculate annual revenue
+- **Custom Plate Tracking**: Accurate differentiation between standard and custom plates
 
-### Input File Format
-The input file should contain one command per line, using the following format:
-```
-addLicence(ABCD)     // Add custom license plate
-addLicence()         // Add random license plate
-dropLicence(ABCD)    // Remove license plate
-lookupLicence(ABCD)  // Check if plate exists
-lookupPrev(ABCD)     // Find previous plate
-lookupNext(ABCD)     // Find next plate
-lookupRange(AAA1,ZZZ9) // Find plates in range
-revenue()            // Calculate revenue
-quit()               // Exit program
-```
+### 📊 Performance Characteristics
+- **O(log n)** time complexity for insert, delete, and search operations
+- **O(log n + k)** time complexity for range queries (k = result size)
+- **O(n)** space complexity for storing n license plates
+- **Self-balancing** tree structure ensures optimal performance
 
-### Output
-The program will generate an output file named `input.txt_output.txt` containing the results of each command.
+## Quick Start Guide
 
-## Technical Implementation
+### Prerequisites
+- Java Development Kit (JDK) 8 or higher
+- GNU Make (for compilation)
+- Text editor for creating input files
 
-### Data Structure
-The system uses a Red-Black Tree implemented from scratch (without built-in libraries) to efficiently manage license plate data with O(log n) time complexity for most operations.
+### Compilation & Execution
 
-A Red-Black Tree is a self-balancing binary search tree with the following properties:
-1. Every node is either red or black
-2. The root is black
-3. Every leaf (NIL) is black
-4. If a node is red, then both its children are black
-5. All simple paths from a node to descendant leaves contain the same number of black nodes
+#### For Linux/Mac/WSL:
+```bash
+# Compile the project
+make
 
-This data structure was chosen for its efficient search, insert, and delete operations, which are all O(log n) in the worst case.
-
-### Project Structure
-
-#### Files
-- `plateMgmt.java`: Main class implementing the license plate management system
-- `RBTree.java`: Red-Black Tree implementation for storing and managing license plates
-- `Makefile`: For compiling the project and creating the executable
-- `test.txt`: Sample test cases for verifying functionality
-
-#### Class Diagram
-```
-+-------------------------+         +------------------------+
-|       plateMgmt         |         |        RBTree          |
-+-------------------------+         +------------------------+
-| -licenseTree: RBTree    |<------->| -root: Node            |
-| -standardPlateCount: int|         | -RED/BLACK: boolean    |
-| -customPlateCount: int  |         +------------------------+
-| -outputWriter: Writer   |         | +insert(key): boolean  |
-+-------------------------+         | +delete(key): boolean  |
-| +addLicence(plateNum)   |         | +search(key): boolean  |
-| +addLicence()           |         | +predecessor(key): str |
-| +dropLicence(plateNum)  |         | +successor(key): str   |
-| +lookupLicence(plateNum)|         | +range(lo, hi): str[]  |
-| +lookupPrev(plateNum)   |         +------------------------+
-| +lookupNext(plateNum)   |                     ^
-| +lookupRange(lo, hi)    |                     |
-| +revenue()              |                     |
-+-------------------------+                     |
-                                      +------------------+
-                                      |       Node       |
-                                      +------------------+
-                                      | -key: String     |
-                                      | -color: boolean  |
-                                      | -left: Node      |
-                                      | -right: Node     |
-                                      | -parent: Node    |
-                                      +------------------+
+# Run with input file
+./plateMgmt test.txt
 ```
 
-## Function Prototypes and Explanations
+#### For Windows:
+```batch
+# Compile the project
+make windows
 
-### plateMgmt Class
+# Run with input file
+plateMgmt.bat test.txt
+```
 
-#### Main Operations
+### Input Commands Format
+Create a text file with commands (one per line):
+
+```
+addLicence(ABCD)     # Register custom license plate "ABCD"
+addLicence()         # Generate and register random license plate
+dropLicence(ABCD)    # Remove license plate "ABCD"
+lookupLicence(ABCD)  # Check if plate "ABCD" exists
+lookupPrev(ABCD)     # Find plate before "ABCD" lexicographically
+lookupNext(ABCD)     # Find plate after "ABCD" lexicographically
+lookupRange(AAA1,ZZZ9) # Find all plates between "AAA1" and "ZZZ9"
+revenue()            # Calculate total annual revenue
+quit()               # Exit the program
+```
+
+### Sample Test File
+The included `test.txt` demonstrates all system features:
+- Custom plate registration with duplicates handling
+- Plate removal from existing and non-existing plates
+- Various lookup operations
+- Range queries and revenue calculation
+
+## System Architecture
+
+### Core Components
+
+#### 1. plateMgmt.java (Main Controller)
+- **Purpose**: Primary interface for the license plate management system
+- **Key Responsibilities**:
+  - Command parsing and execution
+  - File I/O operations
+  - Revenue tracking and calculation
+  - Custom vs. standard plate differentiation
+- **Data Management**: Uses HashSet for tracking custom plates to ensure accurate revenue calculation
+
+#### 2. RBTree.java (Data Structure Engine)
+- **Purpose**: Custom Red-Black Tree implementation optimized for string keys
+- **Key Features**:
+  - Self-balancing binary search tree
+  - Maintains Red-Black Tree properties automatically
+  - Supports efficient range queries
+  - No external library dependencies
+
+### Red-Black Tree Implementation Details
+
+#### Tree Properties Maintained:
+1. **Node Coloring**: Every node is either RED or BLACK
+2. **Root Property**: Root is always BLACK
+3. **Leaf Property**: All NIL nodes are BLACK
+4. **Red Property**: RED nodes have only BLACK children
+5. **Black Height**: All paths from root to leaves have equal BLACK node count
+
+#### Key Algorithms:
+- **Insertion**: Standard BST insert + RB-Tree rebalancing
+- **Deletion**: Standard BST delete + RB-Tree rebalancing  
+- **Rotations**: Left and right rotations for tree balancing
+- **Fixup Operations**: Color adjustments and structural changes
+
+### License Plate Specifications
+- **Format**: Exactly 4 characters
+- **Character Set**: 0-9, A-Z (36 possible characters per position)
+- **Total Combinations**: 36⁴ = 1,679,616 possible plates
+- **Storage**: Lexicographic ordering in the Red-Black Tree
+
+## API Reference
+
+### plateMgmt Class Methods
+
+#### Core Operations
 ```java
-// Register new customized license plate
-public void addLicence(String plateNum)
+// License plate registration and management
+public void addLicence(String plateNum)           // Register custom plate
+public void addRandomLicence()                    // Generate random plate
+public void dropLicence(String plateNum)          // Remove existing plate
 
-// Generate and register a random license plate
-public void addRandomLicence()
+// Search and lookup operations  
+public void lookupLicence(String plateNum)        // Check existence
+public void lookupPrev(String plateNum)           // Find predecessor
+public void lookupNext(String plateNum)           // Find successor
+public void lookupRange(String lo, String hi)     // Range query
 
-// Remove license plate from the system
-public void dropLicence(String plateNum)
-
-// Check if license plate exists
-public void lookupLicence(String plateNum)
-
-// Find lexicographically previous plate
-public void lookupPrev(String plateNum)
-
-// Find lexicographically next plate
-public void lookupNext(String plateNum)
-
-// Find all plates in a given range
-public void lookupRange(String lo, String hi)
-
-// Calculate and report annual revenue
-public void revenue()
+// Business operations
+public void revenue()                              // Calculate revenue
+public void processCommand(String command)        // Parse input commands
 ```
 
-#### Utility Functions
+#### System Management
 ```java
-// Initialize output writer
-public void initOutput(String outputFile)
-
-// Close output writer
-public void closeOutput()
-
-// Process a command from input
-public void processCommand(String command)
-
-// Entry point for the program
-public static void main(String[] args)
+public void initOutput(String outputFile)         // Initialize output writer
+public void closeOutput()                         // Close output writer
+public static void main(String[] args)            // Program entry point
 ```
 
-### RBTree Class
+### RBTree Class Methods
 
 #### Public Interface
 ```java
-// Insert a new license plate into the tree
-public boolean insert(String key)
-
-// Delete a license plate from the tree
-public boolean delete(String key)
-
-// Search for a license plate
-public boolean search(String key)
-
-// Find the predecessor of a license plate
-public String predecessor(String key)
-
-// Find the successor of a license plate
-public String successor(String key)
-
-// Find all license plates in a given range
-public String[] range(String lo, String hi)
+public boolean insert(String key)                 // Insert new key
+public boolean delete(String key)                 // Delete existing key
+public boolean search(String key)                 // Search for key
+public String predecessor(String key)             // Find predecessor
+public String successor(String key)               // Find successor
+public String[] range(String lo, String hi)       // Range search
+public boolean isEmpty()                          // Check if empty
 ```
 
-#### Tree Operations
+#### Internal Tree Operations
 ```java
-// Fix Red-Black Tree properties after insertion
-private void fixAfterInsertion(Node node)
-
-// Fix Red-Black Tree properties after deletion
-private void fixAfterDeletion(Node x)
-
-// Left rotate operation
-private void rotateLeft(Node x)
-
-// Right rotate operation
-private void rotateRight(Node x)
+private void fixAfterInsertion(Node node)         // Rebalance after insert
+private void fixAfterDeletion(Node node)          // Rebalance after delete
+private void rotateLeft(Node x)                   // Left rotation
+private void rotateRight(Node x)                  // Right rotation
+private Node findNode(String key)                 // Locate node by key
+private Node findMin(Node node)                   // Find minimum in subtree
+private Node findMax(Node node)                   // Find maximum in subtree
 ```
 
-## Implementation Details
-
-### License Plate Format
-Each license plate consists of 4 characters, where each character can be a number (0-9) or a capital letter (A-Z).
+## Revenue Model
 
 ### Fee Structure
-- Standard license plates: 4 Galleons annually
-- Customized license plates: 7 Galleons annually (4 + 3 extra)
+- **Standard Plates**: 4 Galleons annually
+  - Generated via `addLicence()` (no parameters)
+  - System generates random 4-character combination
+- **Custom Plates**: 7 Galleons annually (4 + 3 premium)
+  - Registered via `addLicence(plateNum)`
+  - User specifies exact 4-character plate number
 
-### File I/O
-The system reads commands from an input file and writes results to an output file with the name format: `inputFileName output.txt`.
+### Revenue Calculation
+```
+Total Annual Revenue = (Standard Plates × 4) + (Custom Plates × 7)
+```
 
-### Red-Black Tree Implementation
-The Red-Black Tree implementation handles all the necessary balancing operations to maintain the tree's properties after insertions and deletions. Key operations include:
+The system accurately tracks plate types using a HashSet to distinguish between standard and custom plates, ensuring precise revenue calculations.
 
-1. **Insertion**: Standard BST insertion followed by RB-Tree property fixes
-2. **Deletion**: Standard BST deletion followed by RB-Tree property fixes
-3. **Rotations**: Left and right rotations to maintain balance
-4. **Property Fixes**: Recoloring nodes and restructuring to maintain RB-Tree properties
+## Output Format
 
-## Algorithm Analysis
+### File Naming
+- Input: `inputFileName.txt`
+- Output: `inputFileName.txt_output.txt`
+
+### Sample Output Messages
+```
+1111 registered successfully.
+Failed to register 3333: already exists.
+4444 removed successfully.
+Failed to remove 1234: does not exist.
+2222 exists.
+1234 does not exist.
+2222's prev is 1111.
+3333's next is AAAA.
+Plate numbers between 1234 and 3333: 2222, 3333.
+Current annual revenue is 35 Galleons.
+```
+
+## Performance Analysis
 
 ### Time Complexity
-- Search, Insert, Delete: O(log n) where n is the number of license plates
-- Range search: O(log n + k) where k is the number of plates in the range
+| Operation | Red-Black Tree | Justification |
+|-----------|---------------|---------------|
+| Insert | O(log n) | Tree height is O(log n) due to balancing |
+| Delete | O(log n) | Tree height is O(log n) due to balancing |
+| Search | O(log n) | Tree height is O(log n) due to balancing |
+| Predecessor/Successor | O(log n) | Tree traversal bounded by height |
+| Range Query | O(log n + k) | O(log n) to find start + O(k) for k results |
 
 ### Space Complexity
-- O(n) for storing n license plates in the Red-Black Tree
+- **Tree Storage**: O(n) for n license plates
+- **Additional Tracking**: O(c) for c custom plates in HashSet
+- **Total Space**: O(n) where n is total number of plates
 
-## Conclusion
-The Flying Broomstick Management System provides an efficient solution for managing license plates using a Red-Black Tree data structure. The implementation meets all the requirements specified in the assignment, including proper handling of customized and random license plates, various lookup operations, and revenue calculations.
+### Scalability Analysis
+The Red-Black Tree provides excellent scalability characteristics:
+- Handles up to 1.67M possible license plates efficiently
+- Guaranteed logarithmic performance even with worst-case input patterns
+- Memory usage scales linearly with number of registered plates
 
-## References
-1. Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). Introduction to Algorithms (3rd ed.). MIT Press.
-2. Sedgewick, R., & Wayne, K. (2011). Algorithms (4th ed.). Addison-Wesley.
-3. Goodrich, M. T., Tamassia, R., & Goldwasser, M. H. (2014). Data Structures and Algorithms in Java (6th ed.). Wiley.
+## Project Files
+
+```
+├── plateMgmt.java          # Main system controller
+├── RBTree.java             # Red-Black Tree implementation  
+├── Makefile                # Build configuration
+├── test.txt                # Sample test cases
+├── README.md               # Project documentation
+└── Project_Report.pdf      # Detailed technical report
+```
+
+## Testing & Validation
+
+### Included Test Cases
+The `test.txt` file provides comprehensive testing covering:
+- ✅ Custom plate registration (valid and duplicate)
+- ✅ Random plate generation  
+- ✅ Plate removal (existing and non-existing)
+- ✅ Existence lookups
+- ✅ Predecessor/successor queries
+- ✅ Range searches
+- ✅ Revenue calculations
+
+### Testing Your Own Data
+Create custom test files following the command format. The system handles:
+- Empty inputs gracefully
+- Invalid plate formats
+- Edge cases for range queries
+- Large datasets efficiently
+
+## Educational Value
+
+This project demonstrates mastery of:
+- **Advanced Data Structures**: Red-Black Tree implementation from scratch
+- **Algorithm Design**: Self-balancing tree algorithms and rotations
+- **Software Engineering**: Clean code architecture and separation of concerns
+- **File Processing**: Robust input/output handling
+- **Problem Solving**: Real-world application of theoretical concepts
+
+## References & Resources
+
+1. **Cormen, T. H., et al.** (2009). *Introduction to Algorithms (3rd ed.)*. MIT Press.
+   - Chapters 12-13: Binary Search Trees and Red-Black Trees
+2. **Sedgewick, R., & Wayne, K.** (2011). *Algorithms (4th ed.)*. Addison-Wesley.
+   - Chapter 3.3: Balanced Search Trees  
+3. **Goodrich, M. T., et al.** (2014). *Data Structures and Algorithms in Java (6th ed.)*. Wiley.
+   - Chapter 11: Search Trees
+
+---
+
+*Developed as part of COP5536 Advanced Data Structures coursework, demonstrating practical application of theoretical computer science concepts in a real-world scenario.*
